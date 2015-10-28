@@ -6,12 +6,11 @@
 //  Copyright © 2015年 qiang. All rights reserved.
 //
 
-import  UIKit
+import UIKit
 import Alamofire
 import MediaPlayer
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,channelProtocol{
-    
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,channelProtocol {
     
     @IBOutlet weak var iv: EkoImage!
     
