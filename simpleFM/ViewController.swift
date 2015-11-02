@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import MediaPlayer
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,channelProtocol {
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,channelProtocol,UIPickerViewDelegate{
     
     @IBOutlet weak var iv: EkoImage!
     
@@ -18,17 +18,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     @IBOutlet weak var tv: UITableView!
     
-    @IBOutlet weak var process: UIImageView!
-    
-    @IBOutlet weak var playTime: UILabel!
-    
-    @IBOutlet weak var orderButton: UIButton!
-    
-    @IBOutlet weak var previousButton: UIButton!
-    
-    @IBOutlet weak var nextButton: UIButton!
-    
     @IBOutlet weak var playButton: UIButton!
+    
+    @IBOutlet weak var channelPicker: UIPickerView!
     
     var play:Bool = true
     
@@ -58,6 +50,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         tv.dataSource = self
         tv.delegate = self
+        
+        channelPicker.delegate = self
         
         eHttp.delegate = self
         eHttp.onSearch("http://www.douban.com/j/app/radio/channels")
@@ -94,6 +88,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         play = !play
         playOrPause(self.play)
+        self.channelPicker.reloadAllComponents()
     }
     
     func playOrPause(play:Bool){
@@ -113,14 +108,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         timer.invalidate()
         
-        playTime.text = "00:00"
+        //playTime.text = "00:00"
         
         timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "updatePlayTime", userInfo: nil, repeats: true)
         isAutoFinish = true
     }
     
     func didRecieveResults(results:AnyObject){
-        //print(results)
+        print(results)
         var json = JSON(results)
         
         if let song = json["song"].array{
@@ -176,7 +171,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         if currentTime > 0 {
             let totalTime = audioPlayer.duration
             let partial = CGFloat(currentTime/totalTime)
-            self.process.frame.size.width = self.view.frame.size.width * partial
+            //self.process.frame.size.width = self.view.frame.size.width * partial
             
             let now = Int(currentTime)
             let minute:Int = Int(now/60)
@@ -194,7 +189,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             }else{
                 time += "\(second)"
             }
-            playTime.text = time
+           // playTime.text = time
         }
     }
     
@@ -208,6 +203,26 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         let url:String = "http://douban.fm/j/mine/playlist?type=n&channel=\(channel_id)&from=mainsite"
         eHttp.onSearch(url)
         play = true
+    }
+    func pickerView(pickerView:UIPickerView!, numberOfRowsInComponent component:Int) -> Int{
+        return channelData.count
+    }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView!)-> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let numberOfComponentsInChannelData = channelData.count
+        
+        var channelTitle = [String]()
+        for i in 0...(numberOfComponentsInChannelData - 1) {
+            let rowData:JSON = self.channelData[i] as JSON
+            //let cell = ct.dequeueReusableCellWithIdentifier("channel") as UITableViewCell!
+            let title = rowData["name"].string
+            channelTitle.append(title!)
+        }
+        return channelTitle[row]
     }
     
     override func didReceiveMemoryWarning() {
