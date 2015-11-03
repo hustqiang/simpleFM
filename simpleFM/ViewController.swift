@@ -40,6 +40,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     let playImg = UIImage(named: "play.png")
     let pauseImg = UIImage(named: "pause.png")
     
+    var channelTitle = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         iv.onRotation()
@@ -59,7 +61,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         eHttp.onSearch("http://douban.fm/j/mine/playlist?type=n&channel=1&from=mainsite")
         
         tv.backgroundColor = UIColor.clearColor()
-        
+        self.channelPicker.reloadAllComponents()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "play", name: MPMoviePlayerPlaybackDidFinishNotification, object: audioPlayer)
     }
     
@@ -88,7 +90,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         play = !play
         playOrPause(self.play)
-        self.channelPicker.reloadAllComponents()
+        //self.channelPicker.reloadAllComponents()
     }
     
     func playOrPause(play:Bool){
@@ -106,24 +108,27 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.audioPlayer.contentURL = NSURL(string: url)
         self.audioPlayer.play()
         
-        timer.invalidate()
+        //timer.invalidate()
         
-        //playTime.text = "00:00"
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "updatePlayTime", userInfo: nil, repeats: true)
+        //timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "updatePlayTime", userInfo: nil, repeats: true)
         isAutoFinish = true
     }
     
     func didRecieveResults(results:AnyObject){
-        print(results)
+        //print(results)
         var json = JSON(results)
-        
         if let song = json["song"].array{
             self.songData = song
             self.tv.reloadData()
             onSelectRow(0)
         } else if let channel = json["channels"].array{
             self.channelData = channel
+        }
+        
+        for i in 0...(channelData.count - 1) {
+            let rowData:JSON = self.channelData[i] as JSON
+            let title = rowData["name"].string
+            self.channelTitle.append(title!)
         }
     }
     
@@ -148,7 +153,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             self.iv.image = image
             self.bg.image = image
             self.iv.onRotation()
-            
         }
     }
     
@@ -166,32 +170,31 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
     }
     
-    func updatePlayTime(){
-        let currentTime = audioPlayer.currentPlaybackTime
-        if currentTime > 0 {
-            let totalTime = audioPlayer.duration
-            let partial = CGFloat(currentTime/totalTime)
-            //self.process.frame.size.width = self.view.frame.size.width * partial
-            
-            let now = Int(currentTime)
-            let minute:Int = Int(now/60)
-            let second:Int = now%60
-            var time:String = ""
-            
-            if minute<10{
-                time = "0\(minute):"
-            }else {
-                time = "\(minute):"
-            }
-            
-            if second<10{
-                time += "0\(second)"
-            }else{
-                time += "\(second)"
-            }
-           // playTime.text = time
-        }
-    }
+//    func updatePlayTime(){
+//        let currentTime = audioPlayer.currentPlaybackTime
+//        if currentTime > 0 {
+//            let totalTime = audioPlayer.duration
+//            let partial = CGFloat(currentTime/totalTime)
+//            //self.process.frame.size.width = self.view.frame.size.width * partial
+//            let now = Int(currentTime)
+//            let minute:Int = Int(now/60)
+//            let second:Int = now%60
+//            var time:String = ""
+//            
+//            if minute<10{
+//                time = "0\(minute):"
+//            }else {
+//                time = "\(minute):"
+//            }
+//            
+//            if second<10{
+//                time += "0\(second)"
+//            }else{
+//                time += "\(second)"
+//            }
+//           // playTime.text = time
+//        }
+//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let channelC:ChannelController = segue.destinationViewController as! ChannelController
@@ -204,6 +207,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         eHttp.onSearch(url)
         play = true
     }
+    
     func pickerView(pickerView:UIPickerView!, numberOfRowsInComponent component:Int) -> Int{
         return channelData.count
     }
@@ -213,15 +217,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let numberOfComponentsInChannelData = channelData.count
-        
-        var channelTitle = [String]()
-        for i in 0...(numberOfComponentsInChannelData - 1) {
-            let rowData:JSON = self.channelData[i] as JSON
-            //let cell = ct.dequeueReusableCellWithIdentifier("channel") as UITableViewCell!
-            let title = rowData["name"].string
-            channelTitle.append(title!)
-        }
         return channelTitle[row]
     }
     
