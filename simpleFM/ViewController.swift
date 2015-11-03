@@ -24,8 +24,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     var play:Bool = true
     
-    //var timer = NSTimer()
-    
     var eHttp:HTTPController = HTTPController()
     
     var audioPlayer:MPMoviePlayerController = MPMoviePlayerController()
@@ -41,7 +39,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     let pauseImg = UIImage(named: "pause.png")
     
     var channelTitle = [String]()
-//    var resultKeys = [JSON]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         iv.onRotation()
@@ -57,7 +55,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         eHttp.delegate = self
         eHttp.onSearch("http://www.douban.com/j/app/radio/channels")
-        //获取频道为0歌曲数据
+        
         eHttp.onSearch("http://douban.fm/j/mine/playlist?type=n&channel=1&from=mainsite")
         
         tv.backgroundColor = UIColor.clearColor()
@@ -118,21 +116,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             onSelectRow(0)
         } else if let channel = json["channels"].array{
             self.channelData = channel
-        
-//        var resultValues = [String]()
-//            var channelList = Dictionary<String,String>()
-//        for (name) in channelData {
-//            //channelList.append(name,channel_id)
-//            resultKeys.append(name)
-//        }
-        
         }
-        
-//        for i in 0...(channelData.count - 1) {
-//            let rowData:JSON = self.channelData[i] as JSON
-//            let title = rowData["name"].string
-//            self.channelTitle.append(title!)
-//        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -172,18 +156,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             print("cell的图片沿用之前的缓存图片")
         }
     }
-    
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        let channelC:ChannelController = segue.destinationViewController as! ChannelController
-//        channelC.delegate = self
-//        channelC.channelData = self.channelData
-//    }
-    
-//    func onChangeChannel(channel_id:String){
-//        let url:String = "http://douban.fm/j/mine/playlist?type=n&channel=\(channel_id)&from=mainsite"
-//        eHttp.onSearch(url)
-//        play = true
-//    }
     
     func pickerView(pickerView:UIPickerView!, numberOfRowsInComponent component:Int) -> Int{
         return channelData.count
