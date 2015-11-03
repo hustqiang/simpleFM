@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import MediaPlayer
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,channelProtocol,UIPickerViewDelegate{
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,UIPickerViewDelegate{
     
     @IBOutlet weak var iv: EkoImage!
     
@@ -24,7 +24,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     var play:Bool = true
     
-    var timer = NSTimer()
+    //var timer = NSTimer()
     
     var eHttp:HTTPController = HTTPController()
     
@@ -41,7 +41,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     let pauseImg = UIImage(named: "pause.png")
     
     var channelTitle = [String]()
-    
+//    var resultKeys = [JSON]()
     override func viewDidLoad() {
         super.viewDidLoad()
         iv.onRotation()
@@ -81,7 +81,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return cell
     }
     
-    
     @IBAction func clickToPlayOrPause(sender: AnyObject) {
         if play {
             playButton.setImage(playImg, forState: UIControlState.Normal)
@@ -90,7 +89,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         play = !play
         playOrPause(self.play)
-        //self.channelPicker.reloadAllComponents()
+        self.channelPicker.reloadAllComponents()
     }
     
     func playOrPause(play:Bool){
@@ -107,10 +106,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.audioPlayer.stop()
         self.audioPlayer.contentURL = NSURL(string: url)
         self.audioPlayer.play()
-        
-        //timer.invalidate()
-        
-        //timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "updatePlayTime", userInfo: nil, repeats: true)
         isAutoFinish = true
     }
     
@@ -123,13 +118,21 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             onSelectRow(0)
         } else if let channel = json["channels"].array{
             self.channelData = channel
+        
+//        var resultValues = [String]()
+//            var channelList = Dictionary<String,String>()
+//        for (name) in channelData {
+//            //channelList.append(name,channel_id)
+//            resultKeys.append(name)
+//        }
+        
         }
         
-        for i in 0...(channelData.count - 1) {
-            let rowData:JSON = self.channelData[i] as JSON
-            let title = rowData["name"].string
-            self.channelTitle.append(title!)
-        }
+//        for i in 0...(channelData.count - 1) {
+//            let rowData:JSON = self.channelData[i] as JSON
+//            let title = rowData["name"].string
+//            self.channelTitle.append(title!)
+//        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -170,43 +173,17 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
     }
     
-//    func updatePlayTime(){
-//        let currentTime = audioPlayer.currentPlaybackTime
-//        if currentTime > 0 {
-//            let totalTime = audioPlayer.duration
-//            let partial = CGFloat(currentTime/totalTime)
-//            //self.process.frame.size.width = self.view.frame.size.width * partial
-//            let now = Int(currentTime)
-//            let minute:Int = Int(now/60)
-//            let second:Int = now%60
-//            var time:String = ""
-//            
-//            if minute<10{
-//                time = "0\(minute):"
-//            }else {
-//                time = "\(minute):"
-//            }
-//            
-//            if second<10{
-//                time += "0\(second)"
-//            }else{
-//                time += "\(second)"
-//            }
-//           // playTime.text = time
-//        }
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        let channelC:ChannelController = segue.destinationViewController as! ChannelController
+//        channelC.delegate = self
+//        channelC.channelData = self.channelData
 //    }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let channelC:ChannelController = segue.destinationViewController as! ChannelController
-        channelC.delegate = self
-        channelC.channelData = self.channelData
-    }
-    
-    func onChangeChannel(channel_id:String){
-        let url:String = "http://douban.fm/j/mine/playlist?type=n&channel=\(channel_id)&from=mainsite"
-        eHttp.onSearch(url)
-        play = true
-    }
+//    func onChangeChannel(channel_id:String){
+//        let url:String = "http://douban.fm/j/mine/playlist?type=n&channel=\(channel_id)&from=mainsite"
+//        eHttp.onSearch(url)
+//        play = true
+//    }
     
     func pickerView(pickerView:UIPickerView!, numberOfRowsInComponent component:Int) -> Int{
         return channelData.count
@@ -217,7 +194,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return channelTitle[row]
+        let rowData:JSON = self.channelData[row] as JSON
+        let title = rowData["name"].string
+        return title
+        
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let rowData:JSON = self.channelData[row] as JSON
+        let channel_id:String = rowData["channel_id"].stringValue
+        let url:String = "http://douban.fm/j/mine/playlist?type=n&channel=\(channel_id)&from=mainsite"
+        eHttp.onSearch(url)
+        play = true
     }
     
     override func didReceiveMemoryWarning() {

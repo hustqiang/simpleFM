@@ -33,20 +33,6 @@
                                 <rect key="frame" x="125" y="95" width="70" height="70"/>
                                 <animations/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t7x-Hy-4ri">
-                                <rect key="frame" x="268" y="130" width="35" height="35"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="35" id="D41-wz-cdh"/>
-                                    <constraint firstAttribute="height" constant="35" id="fwg-5c-bKT"/>
-                                </constraints>
-                                <state key="normal" image="channel">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="F8t-yZ-n2j" kind="presentation" animates="NO" modalPresentationStyle="pageSheet" id="tic-mC-Hrs"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hWY-UG-4Qy" userLabel="tv">
                                 <rect key="frame" x="0.0" y="257" width="320" height="145"/>
                                 <animations/>
@@ -98,7 +84,7 @@
                                 </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5RE-7f-BPG">
-                                <rect key="frame" x="0.0" y="403" width="180" height="165"/>
+                                <rect key="frame" x="0.0" y="403" width="320" height="165"/>
                                 <animations/>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="gzJ-dS-Qy6"/>
@@ -118,7 +104,6 @@
                             <constraint firstAttribute="centerX" secondItem="hWY-UG-4Qy" secondAttribute="centerX" id="8Tc-Us-zPL"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="p2e-ko-hFJ" secondAttribute="bottom" id="KfR-iz-X6L"/>
                             <constraint firstItem="hWY-UG-4Qy" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="289" id="LQu-Hh-Y4e"/>
-                            <constraint firstAttribute="centerX" secondItem="t7x-Hy-4ri" secondAttribute="centerX" constant="-131.5" id="M6t-Va-Bkd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="p2e-ko-hFJ" secondAttribute="trailing" constant="-16" id="N5h-FV-lvf"/>
                             <constraint firstAttribute="centerY" secondItem="NKT-s5-vuR" secondAttribute="centerY" id="QBG-ZG-XBS"/>
                             <constraint firstItem="eDX-Ex-P02" firstAttribute="centerX" secondItem="cvC-XE-gw0" secondAttribute="centerX" id="QdY-eJ-Tzm"/>
@@ -169,71 +154,8 @@
             </objects>
             <point key="canvasLocation" x="5" y="124"/>
         </scene>
-        <!--Channel Controller-->
-        <scene sceneID="Doi-WG-V9L">
-            <objects>
-                <viewController id="F8t-yZ-n2j" customClass="ChannelController" customModule="simpleFM" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PAK-X4-qHk"/>
-                        <viewControllerLayoutGuide type="bottom" id="IKZ-IR-L1n"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="y6H-yh-T8c">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="选择频道" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVJ-Kg-Mb2">
-                                <rect key="frame" x="0.0" y="12" width="320" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="HwL-0z-r0z">
-                                <rect key="frame" x="0.0" y="41" width="320" height="527"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="channel" id="fE1-07-rE6">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fE1-07-rE6" id="WXm-5W-f8S">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <animations/>
-                                        </tableViewCellContentView>
-                                        <animations/>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="F8t-yZ-n2j" id="ry1-Qh-rRU"/>
-                                    <outlet property="delegate" destination="F8t-yZ-n2j" id="oSg-Gh-z7w"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="HwL-0z-r0z" secondAttribute="trailing" constant="-16" id="8vs-Zh-NWR"/>
-                            <constraint firstItem="IKZ-IR-L1n" firstAttribute="top" secondItem="HwL-0z-r0z" secondAttribute="bottom" id="B0g-rA-bRn"/>
-                            <constraint firstItem="HwL-0z-r0z" firstAttribute="leading" secondItem="y6H-yh-T8c" secondAttribute="leadingMargin" constant="-16" id="CVL-T5-A8g"/>
-                            <constraint firstItem="OVJ-Kg-Mb2" firstAttribute="leading" secondItem="y6H-yh-T8c" secondAttribute="leadingMargin" constant="-16" id="Ddb-NG-NMH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="OVJ-Kg-Mb2" secondAttribute="trailing" constant="-16" id="Nn5-cx-ryv"/>
-                            <constraint firstItem="HwL-0z-r0z" firstAttribute="top" secondItem="OVJ-Kg-Mb2" secondAttribute="bottom" constant="8" id="Qd2-ha-nXp"/>
-                            <constraint firstItem="OVJ-Kg-Mb2" firstAttribute="top" secondItem="y6H-yh-T8c" secondAttribute="topMargin" constant="12" id="gOD-th-qKb"/>
-                        </constraints>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="ct" destination="HwL-0z-r0z" id="xlu-UJ-WED"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5Mh-3U-cmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="407" y="124"/>
-        </scene>
     </scenes>
     <resources>
-        <image name="channel" width="40" height="40"/>
         <image name="logo" width="200" height="200"/>
         <image name="pause" width="40" height="40"/>
         <image name="timeBg" width="70" height="70"/>

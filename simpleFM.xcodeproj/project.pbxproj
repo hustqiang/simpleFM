@@ -17,7 +17,6 @@
 		F03C383B1BD0B06B00680746 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C383A1BD0B06B00680746 /* SwiftyJSON.swift */; };
 		F0FA56F91BE0FD7000142337 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0FA56EC1BE0FD3E00142337 /* Alamofire.framework */; };
 		F0FA56FA1BE0FD7000142337 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F0FA56EC1BE0FD3E00142337 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F0FA56FF1BE0FF7B00142337 /* ChannelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FA56FE1BE0FF7B00142337 /* ChannelController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +104,6 @@
 		F03C38381BD0AFF700680746 /* HTTPController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPController.swift; sourceTree = "<group>"; };
 		F03C383A1BD0B06B00680746 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		F0FA56E11BE0FD3E00142337 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = "Alamofire-master/Alamofire.xcodeproj"; sourceTree = "<group>"; };
-		F0FA56FE1BE0FF7B00142337 /* ChannelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChannelController.swift; path = ../ChannelController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,7 +141,6 @@
 				F03C383A1BD0B06B00680746 /* SwiftyJSON.swift */,
 				F03C376D1BCFE42000680746 /* AppDelegate.swift */,
 				F03C376F1BCFE42000680746 /* ViewController.swift */,
-				F0FA56FE1BE0FF7B00142337 /* ChannelController.swift */,
 				F03C38281BD0AE0A00680746 /* EkoImage.swift */,
 				F03C37711BCFE42000680746 /* Main.storyboard */,
 				F03C37741BCFE42000680746 /* Assets.xcassets */,
@@ -304,7 +301,6 @@
 				F03C38391BD0AFF700680746 /* HTTPController.swift in Sources */,
 				F03C383B1BD0B06B00680746 /* SwiftyJSON.swift in Sources */,
 				F03C376E1BCFE42000680746 /* AppDelegate.swift in Sources */,
-				F0FA56FF1BE0FF7B00142337 /* ChannelController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
