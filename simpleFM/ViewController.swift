@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import MediaPlayer
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,channelProtocol {
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,HttpProtocol,UIPickerViewDelegate{
     
     @IBOutlet weak var iv: EkoImage!
     
@@ -18,21 +18,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     @IBOutlet weak var tv: UITableView!
     
-    @IBOutlet weak var process: UIImageView!
-    
-    @IBOutlet weak var playTime: UILabel!
-    
-    @IBOutlet weak var orderButton: UIButton!
-    
-    @IBOutlet weak var previousButton: UIButton!
-    
-    @IBOutlet weak var nextButton: UIButton!
-    
     @IBOutlet weak var playButton: UIButton!
     
-    var play:Bool = true
+    @IBOutlet weak var channelPicker: UIPickerView!
     
-    var timer = NSTimer()
+    var play:Bool = true
     
     var eHttp:HTTPController = HTTPController()
     
@@ -48,6 +38,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     let playImg = UIImage(named: "play.png")
     let pauseImg = UIImage(named: "pause.png")
     
+    var channelTitle = [String]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         iv.onRotation()
@@ -59,13 +51,15 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         tv.dataSource = self
         tv.delegate = self
         
+        channelPicker.delegate = self
+        
         eHttp.delegate = self
         eHttp.onSearch("http://www.douban.com/j/app/radio/channels")
-        //获取频道为0歌曲数据
+        
         eHttp.onSearch("http://douban.fm/j/mine/playlist?type=n&channel=1&from=mainsite")
         
         tv.backgroundColor = UIColor.clearColor()
-        
+        self.channelPicker.reloadAllComponents()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "play", name: MPMoviePlayerPlaybackDidFinishNotification, object: audioPlayer)
     }
     
@@ -85,7 +79,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return cell
     }
     
-    
     @IBAction func clickToPlayOrPause(sender: AnyObject) {
         if play {
             playButton.setImage(playImg, forState: UIControlState.Normal)
@@ -94,6 +87,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         play = !play
         playOrPause(self.play)
+        self.channelPicker.reloadAllComponents()
     }
     
     func playOrPause(play:Bool){
@@ -110,19 +104,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.audioPlayer.stop()
         self.audioPlayer.contentURL = NSURL(string: url)
         self.audioPlayer.play()
-        
-        timer.invalidate()
-        
-        playTime.text = "00:00"
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "updatePlayTime", userInfo: nil, repeats: true)
         isAutoFinish = true
     }
     
     func didRecieveResults(results:AnyObject){
         //print(results)
         var json = JSON(results)
-        
         if let song = json["song"].array{
             self.songData = song
             self.tv.reloadData()
@@ -153,7 +140,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             self.iv.image = image
             self.bg.image = image
             self.iv.onRotation()
-            
         }
     }
     
@@ -171,40 +157,24 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
     }
     
-    func updatePlayTime(){
-        let currentTime = audioPlayer.currentPlaybackTime
-        if currentTime > 0 {
-            let totalTime = audioPlayer.duration
-            let partial = CGFloat(currentTime/totalTime)
-            self.process.frame.size.width = self.view.frame.size.width * partial
-            
-            let now = Int(currentTime)
-            let minute:Int = Int(now/60)
-            let second:Int = now%60
-            var time:String = ""
-            
-            if minute<10{
-                time = "0\(minute):"
-            }else {
-                time = "\(minute):"
-            }
-            
-            if second<10{
-                time += "0\(second)"
-            }else{
-                time += "\(second)"
-            }
-            playTime.text = time
-        }
+    func pickerView(pickerView:UIPickerView!, numberOfRowsInComponent component:Int) -> Int{
+        return channelData.count
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let channelC:ChannelController = segue.destinationViewController as! ChannelController
-        channelC.delegate = self
-        channelC.channelData = self.channelData
+    func numberOfComponentsInPickerView(pickerView: UIPickerView!)-> Int {
+        return 1
     }
     
-    func onChangeChannel(channel_id:String){
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        let rowData:JSON = self.channelData[row] as JSON
+        let title = rowData["name"].string
+        return title
+        
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let rowData:JSON = self.channelData[row] as JSON
+        let channel_id:String = rowData["channel_id"].stringValue
         let url:String = "http://douban.fm/j/mine/playlist?type=n&channel=\(channel_id)&from=mainsite"
         eHttp.onSearch(url)
         play = true
